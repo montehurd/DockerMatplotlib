@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 # -*- coding: UTF-8 -*-
 
 import base64
@@ -11,7 +11,9 @@ from matplotlib.lines import Line2D
 import matplotlib.cm as cm
 from matplotlib.colors import LogNorm
 import matplotlib.tri as tri
-
+import matplotlib.animation as animation
+from time import sleep
+import pandas as pd
 
 def imageTagForData(data, extension):
   return '<img src="data:image/{0};base64, {1}">'.format(extension, base64.b64encode(data).decode())
@@ -245,23 +247,8 @@ ax.set_title('Simplest default with labels')
 print(base64PNGImageTagForPlot(plt))
 
 
-# plt.clf()
-# print('Example 13')
-# # invent some numbers, turning the x and y arrays into simple
-# # 2d arrays, which make combining them together easier.
-# x = np.linspace(-3, 5, 150).reshape(1, -1)
-# y = np.linspace(-3, 5, 120).reshape(-1, 1)
-# z = np.cos(x) + np.sin(y)
-# # we no longer need x and y to be 2 dimensional, so flatten them.
-# x, y = x.flatten(), y.flatten()
-# fig1, ax1 = plt.subplots()
-# cs = ax1.contourf(x, y, z, hatches=[ '-', '/', '\\\', '//' ], cmap='gray', extend='both', alpha=0.5)
-# fig1.colorbar(cs)
-# print(base64PNGImageTagForPlot(plt))
-
-
 plt.clf()
-print('Example 14')
+print('Example 13')
 X = np.arange(-10, 10, 1)
 Y = np.arange(-10, 10, 1)
 U, V = np.meshgrid(X, Y)
@@ -272,7 +259,7 @@ print(base64PNGImageTagForPlot(plt))
 
 
 plt.clf()
-print('Example 15')
+print('Example 14')
 Z = np.random.rand(6, 10)
 fig, (ax0, ax1) = plt.subplots(2, 1)
 c = ax0.pcolor(Z)
@@ -284,7 +271,7 @@ print(base64PNGImageTagForPlot(plt))
 
 
 plt.clf()
-print('Example 16')
+print('Example 15')
 plt.figure()
 plt.subplot(111, projection="aitoff")
 plt.title("Aitoff")
@@ -293,43 +280,7 @@ print(base64PNGImageTagForPlot(plt))
 
 
 plt.clf()
-print('Example 17')
-TWOPI = 2*np.pi
-fig, ax = plt.subplots()
-t = np.arange(0.0, TWOPI, 0.001)
-s = np.sin(t)
-l = plt.plot(t, s)
-ax = plt.axis([0,TWOPI,-1,1])
-redDot, = plt.plot([0], [np.sin(0)], 'ro')
-def animate(i):
-  redDot.set_data(i, np.sin(i))
-  return redDot,
-anim = animation.FuncAnimation(fig, animate, frames=np.arange(0.0, TWOPI, 0.1), interval=10, repeat=False)
-print(base64GIFImageTagForAnimation(anim))
-
-
-plt.clf()
-print('Example 18')
-fig = plt.figure()
-def f(x, y):
-  return np.sin(x) + np.cos(y)
-x = np.linspace(0, 2 * np.pi, 120)
-y = np.linspace(0, 2 * np.pi, 100).reshape(-1, 1)
-# ims is a list of lists, each row is a list of artists to draw in the
-# current frame; here we are just animating one artist, the image, in
-# each frame
-ims = []
-for i in range(60):
-  x += np.pi / 15.
-  y += np.pi / 20.
-  im = plt.imshow(f(x, y), animated=True)
-  ims.append([im])
-anim = animation.ArtistAnimation(fig, ims, interval=50, repeat_delay=1000)
-print(base64GIFImageTagForAnimation(anim))
-
-
-plt.clf()
-print('Example 19')
+print('Example 16')
 # Fixing random state for reproducibility
 np.random.seed(19680801)
 n = 100000
@@ -357,6 +308,7 @@ print(base64PNGImageTagForPlot(plt))
 
 
 plt.clf()
+print('Example 17')
 #-----------------------------------------------------------------------------
 # Analytical test function
 #-----------------------------------------------------------------------------
@@ -410,6 +362,82 @@ ax.tricontour(tri_refi, z_test_refi, levels=levels,
                linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
 ax.set_title("High-resolution tricontouring")
 print(base64PNGImageTagForPlot(plt))
+
+
+print('<br><br><hr>The three animation examples below take a while to load - have not optimized them at all :) The third one may take a full minute to appear - it crunches a huge data set.<hr><br><br>')
+
+
+plt.clf()
+print('Example 18')
+TWOPI = 2*np.pi
+fig, ax = plt.subplots()
+t = np.arange(0.0, TWOPI, 0.001)
+s = np.sin(t)
+l = plt.plot(t, s)
+ax = plt.axis([0,TWOPI,-1,1])
+redDot, = plt.plot([0], [np.sin(0)], 'ro')
+def animate(i):
+  redDot.set_data(i, np.sin(i))
+  return redDot,
+anim = animation.FuncAnimation(fig, animate, frames=np.arange(0.0, TWOPI, 0.1), interval=10, repeat=False)
+print(base64GIFImageTagForAnimation(anim))
+
+
+plt.clf()
+print('Example 19')
+fig = plt.figure()
+def f(x, y):
+  return np.sin(x) + np.cos(y)
+x = np.linspace(0, 2 * np.pi, 120)
+y = np.linspace(0, 2 * np.pi, 100).reshape(-1, 1)
+# ims is a list of lists, each row is a list of artists to draw in the
+# current frame; here we are just animating one artist, the image, in
+# each frame
+ims = []
+for i in range(60):
+  x += np.pi / 15.
+  y += np.pi / 20.
+  im = plt.imshow(f(x, y), animated=True)
+  ims.append([im])
+anim = animation.ArtistAnimation(fig, ims, interval=50, repeat_delay=1000)
+print(base64GIFImageTagForAnimation(anim))
+
+
+plt.clf()
+print('Example 20')
+# This example based on: https://opensource.com/article/20/4/python-data-covid-19
+#### ---- Step 1:- Download data
+URL_DATASET = r'https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv'
+df = pd.read_csv(URL_DATASET, usecols = ['Date', 'Country', 'Confirmed'])
+
+#### ---- Step 2:- Create list of all dates
+list_dates = df['Date'].unique()
+# print(list_dates) # Uncomment to see the dates
+
+#### --- Step 3:- Pick 5 countries. Also create ax object
+fig, ax = plt.subplots(figsize=(8, 4))
+# We will animate for these 5 countries only
+list_countries = ['India', 'China', 'US', 'Italy', 'Spain']
+# colors for the 5 horizontal bars
+list_colors = ['black', 'red', 'green', 'blue', 'yellow']
+
+### --- Step 4:- Write the call back function
+# plot_bar() is the call back function used in FuncAnimation class object
+def plot_bar(some_date):
+    df2 = df[df['Date'].eq(some_date)]
+    ax.clear()
+    # Only take Confirmed column in descending order
+    df3 = df2.sort_values(by = 'Confirmed', ascending = False)
+    # Select the top 5 Confirmed countries
+    df4 = df3[df3['Country'].isin(list_countries)]
+    # print(df4)  # Uncomment to see that dat is only for 5 countries
+    sleep(0.2)  # To slow down the animation
+    # ax.barh() makes a horizontal bar plot.
+    return ax.barh(df4['Country'], df4['Confirmed'], color= list_colors)
+
+###----Step 5:- Create FuncAnimation object---------
+my_anim = animation.FuncAnimation(fig = fig, func = plot_bar, frames= list_dates, blit=True, interval=20)
+print(base64GIFImageTagForAnimation(my_anim))
 
 
 print('''

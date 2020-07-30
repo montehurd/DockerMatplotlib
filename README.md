@@ -42,8 +42,8 @@ Once it's running you can view the sample graphs web page with this URL:
 
 The "Docker-ization" of this graphing code was a learning exercise - a variation of the great Docker tutorial found here: https://docker-curriculum.com
 
-Assuming you have Python3 installed, the graphs page may also be served up by a simple Python server w/o Docker:
+Assuming you have Python 3.7 installed, the graphs page may also be served up by a simple Python server w/o Docker:
 
-`python3 -m http.server --cgi 8383`
+`python3.7 -m http.server --cgi 8383`
 
 Or you can run this [shell script](https://gist.github.com/montehurd/1f8ffb8de517adc1d54d6e6b62ad9f88).

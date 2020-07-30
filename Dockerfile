@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7
 
 # set a directory for the app
 WORKDIR /usr/src/DockerTest
@@ -7,6 +7,8 @@ WORKDIR /usr/src/DockerTest
 COPY . .
 
 # install dependencies
+RUN pip3 install --upgrade pip
+RUN pip3 install pandas
 RUN pip3 install numpy
 RUN pip3 install matplotlib
 
